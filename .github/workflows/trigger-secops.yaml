@@ -32,3 +32,17 @@ jobs:
                "commit_sha": "${{ github.sha }}"
              }
            }'
+
+      - name: Checkout Exact Application Commit
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.client_payload.repository }}
+          ref: ${{ github.event.client_payload.commit_sha }}
+          path: application
+
+      - name: Verify Checked Out Commit
+        working-directory: application
+        run: |
+          echo "Application Source Successfully Checked Out"
+          echo "Checked Out Commit SHA:"
+          git rev-parse HEAD
