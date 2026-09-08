@@ -1,26 +1,22 @@
 name: Step 1 - Verify Application Push Trigger
-
 on:
   push:
     branches:
-      - main
-
+        - main
 jobs:
-  verify-push-trigger:
+  verify-push-trigger: 
     name: Verify Application Push Trigger
     runs-on: ubuntu-latest
-
     steps:
       - name: Confirmation
         run: |
           echo "Application repository push"
           echo "Repository: ${{ github.repository }}"
-          echo "Branch: ${{ github.ref_name }}"
-          echo "Commit SHA: ${{ github.sha }}"
-
-      - name: Trigger SecOps Repository
+          echo "Branch: ${{ github.ref_name}}" 
+          echo "Commit SHA: ${{github.sha}}" 
+      - name: Trigger Secops Repository
         env:
-          SECOPS_TRIGGER_TOKEN: ${{ secrets.SECOPS_TRIGGER_TOKEN }}
+          SECOPS_TRIGGER_TOKEN: ${{secrets.SECOPS_TRIGGER_TOKEN}}
         run: |
           curl --fail-with-body \
             -L \
@@ -30,10 +26,11 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/vishal2611/SecOps/dispatches \
             -d '{
-              "event_type": "application_push",
-              "client_payload": {
+              "event_type":"application_push",
+              "client_payload":{
                 "repository": "${{ github.repository }}",
-                "branch": "${{ github.ref_name }}",
-                "commit_sha": "${{ github.sha }}"
+                "branch":"${{ github.ref_name }}",
+                "commit_sha":"${{ github.sha }}"
               }
             }'
+        
